@@ -6,7 +6,11 @@ import Navbar from '../components/navbar.component';
 import SecondaryTextField from '../components/textFields/secondary.textFields.component';
 import PrimaryTextFields from '../components/textFields/primary.textFields.component';
 
-import { FaGraduationCap, FaSchool, FaUserGraduate, FaBirthdayCake } from 'react-icons/fa';
+import { Calendar } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+
+import { FaGraduationCap, FaSchool, FaUserGraduate, FaBirthdayCake, FaCalendarAlt } from 'react-icons/fa';
 
 function Dashboard() {
 
@@ -14,6 +18,9 @@ function Dashboard() {
     const [branch, setBranch] = useState('Select');
     const [gender, setGender] = useState('Select');
     const [bloodGroup, setBloodGroup] = useState('Select');
+
+    const [admissionDate, setAdmissionDate] = useState(null);
+    const [admissionDateString, setAdmissionDateString] = useState(null);
 
     const acYearOptions = ["2020-2021", "2021-2022", "2022-2023", "2023-2024", "2024-2025", "2025-2026", "2026-2027"];
     const branchOptions = ["Icon School & College", "Oxford International"];
@@ -65,11 +72,30 @@ function Dashboard() {
                                 </p>
                                 <PrimaryTextFields />
                             </div>
-                            <div className="w-full">
+                            <div className="relative w-full">
                                 <p className="py-1">
                                     Admission Date <span className="text-red-600">*</span>
                                 </p>
-                                <input type="date" className="appearance-none w-full rounded border p-1 shadow text-sm border-gray-500" />
+                                <div className="inline-flex w-full border border-gray-500 rounded">
+                                    <div className="w-1/4 bg-gray-200 pt-2 border-r border-gray-500">
+                                        <FaCalendarAlt className="mx-auto" />
+                                    </div>
+                                    <div className="w-3/4">
+                                        <input type="text" className="w-full rounded shadow p-1 px-4" placeholder="Select Date" readOnly value={admissionDateString} onClick={() => {
+                                            document.querySelector('#admissionCalendar').classList.remove('hidden');
+                                        }} />
+                                        <div id="admissionCalendar" className="z-20 absolute w-auto hidden">
+                                            <Calendar onChange={item => {
+                                                var date = new Date(item);
+                                                console.log(date.toLocaleDateString());
+                                                setAdmissionDate(date);
+                                                setAdmissionDateString(date.toLocaleDateString());
+                                                document.querySelector('#admissionCalendar').classList.add('hidden');
+                                            }} date={admissionDate} color="#3e0bec" />
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                             <div className="w-full">
                                 <p className="py-1">
